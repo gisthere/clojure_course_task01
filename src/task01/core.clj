@@ -6,12 +6,12 @@
 (defn links[arg]
   ; обход смежных вершин (элементов вектора)
   ; acc аккумулирует значения, которые затем вернёт рекурсия
-  (loop [b arg acc []] ; b = arg
+  (loop [b arg acc []]
   ; условие выхода из цикла и рекурсии 
    (if (and (coll? b) (not (empty? b)))
      ; если в векторе найден элемент удовлетворяющий первому условию, то извлекаем из вектора ссылку
-     (if (some #(= % {:class "r"}) b)
-       (conj acc (some (fn f1 [arg] (when (coll? arg) (some #(get % :href) arg))) b))
+     (if (some #(= (:class %) "r") b)
+       (conj acc (some (fn f1 [arg] (when (coll? arg) (some #(:href %) arg))) b))
        ; иначе переходим вглубь
        (recur (next b) (into acc (links (first b)))))
      acc)))
